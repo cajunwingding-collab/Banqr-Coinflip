@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Coin Flip</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      background: #111;
+      color: white;
+
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-bottom: 45px;
+      font-size: 48px;
+    }
+
+    .coin {
+      width: 220px;
+      height: 220px;
+
+      border-radius: 50%;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-size: 30px;
+      font-weight: bold;
+
+      background: gold;
+      color: #111;
+
+      margin-bottom: 35px;
+
+      border: 8px solid #d4a900;
+
+      user-select: none;
+    }
+
+    .flipping {
+      animation: flip 0.6s linear;
+    }
+
+    @keyframes flip {
+      0% {
+        transform: rotateY(0deg);
+      }
+
+      100% {
+        transform: rotateY(1440deg);
+      }
+    }
+
+    .status {
+      font-size: 20px;
+      opacity: 0.7;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Coin Flip</h1>
+
+  <div class="coin" id="coin">
+    PRESS SPACE
+  </div>
+
+  <div class="status" id="status">
+    Press Space to flip
+  </div>
+
+  <script>
+
+    let aHeld = false;
+    let dHeld = false;
+    let flipping = false;
+
+
+    document.addEventListener("keydown", function(event) {
+
+      const key = event.key.toLowerCase();
+
+
+      if (key === "a") {
+        aHeld = true;
+      }
+
+
+      if (key === "d") {
+        dHeld = true;
+      }
+
+
+      if (event.code === "Space") {
+
+        event.preventDefault();
+
+        flipCoin();
+
+      }
+
+    });
+
+
+    document.addEventListener("keyup", function(event) {
+
+      const key = event.key.toLowerCase();
+
+
+      if (key === "a") {
+        aHeld = false;
+      }
+
+
+      if (key === "d") {
+        dHeld = false;
+      }
+
+    });
+
+
+    function flipCoin() {
+
+      if (flipping) return;
+
+      flipping = true;
+
+
+      const coin = document.getElementById("coin");
+      const status = document.getElementById("status");
+
+
+      let result;
+
+
+      if (aHeld && !dHeld) {
+
+        result = "HEADS";
+
+      }
+
+      else if (dHeld && !aHeld) {
+
+        result = "TAILS";
+
+      }
+
+      else {
+
+        result = Math.random() < 0.5
+          ? "HEADS"
+          : "TAILS";
+
+      }
+
+
+      coin.textContent = "?";
+      status.textContent = "Flipping...";
+
+
+      coin.classList.remove("flipping");
+
+      void coin.offsetWidth;
+
+      coin.classList.add("flipping");
+
+
+      setTimeout(function() {
+
+        coin.textContent = result;
+        status.textContent = "Press Space to flip";
+
+        flipping = false;
+
+      }, 600);
+
+    }
+
+  </script>
+
+</body>
+</html>
+
